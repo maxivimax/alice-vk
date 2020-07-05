@@ -3,8 +3,7 @@ import vk
 INTRO_TEXT = 'Хай, как дела?) Ты как сюда попал?!. ' \
     'Чтобы выйти, скажи "Хватит".'
 POST_TEXT = 'Хорошо, я запостил фразу Hello World! на твоей стене'
-# токен прилоги - d0e78ffb7185866fbe6ccdc608d25b71b74aaf32e10c545e64e750c71318153ee759303586b2c25427468
-session = vk.Session(access_token='3c2198cd0f703b110c6bb8e24000ab1d03bf7f8bdaf3382b8a41cb73cd7da82db5f9150e5d3457dab2d43')
+ghfhfghfsession = vk.Session(access_token=rtt')
 api = vk.API(session, v='5.85')
 
 def remove_char(s):
