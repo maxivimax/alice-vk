@@ -1,9 +1,8 @@
 import vk
+import config
 
-INTRO_TEXT = 'Хай, как дела?) Ты как сюда попал?!. ' \
-    'Чтобы выйти, скажи "Хватит".'
-POST_TEXT = 'Хорошо, я запостил фразу Hello World! на твоей стене'
-ghfhfghfsession = vk.Session(access_token=rtt')
+# токен прилоги - d0e78ffb7185866fbe6ccdc608d25b71b74aaf32e10c545e64e750c71318153ee759303586b2c25427468
+session = vk.Session(config.tokenVK)
 api = vk.API(session, v='5.85')
 
 def remove_char(s):
@@ -29,10 +28,11 @@ def handler(event, context):
     elif intents.get('vkpost'):
         messagepost1 = remove_char(command)
         messagepost = remove_char1(messagepost1)
-        text = messagepost
+        textold = config.POST_TEXT1 + messagepost + config.POST_TEXT2
+        text = textold
         api.wall.post(message = messagepost)
     elif command:
-        text = 'Не поняла тебя. Для выхода, скажите "Хватит".'
+        text = 'Не поняла тебя. Для выхода, скажи "Хватит".'
 
     return {
         'version': event['version'],
