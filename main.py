@@ -101,12 +101,31 @@ def remove_charmess1(s):
     result = s.replace("отправь сообщение ", "")
     return result
 
+def message_send(event, context):
+    intents = event.get('request', {}).get('nlu', {}).get('intents', {})
+    command = event.get('request', {}).get('command')
+    chto = event.get('request', {}).get('nlu', {}).get('intents', {}).get('vkmessage', {}).get('slots', {}).get('Chto', {}).get('value')
+    chtostatus = event.get('request', {}).get('nlu', {}).get('intents', {}).get('statusset', {}).get('slots', {}).get('Chto', {}).get('value')
+    komu = event.get('request', {}).get('nlu', {}).get('intents', {}).get('vkmessage', {}).get('slots', {}).get('Komu', {}).get('value')
+    
+    if intents.get('yes'):
+        text = str(config.MESS_TEXT1) + str(chto) + str(config.MESS_TEXT2) + str(komu)
+        komu_id = name_to_id(komu)
+        api.messages.send(user_id = komu_id, message = chto)
+        end_session = 'true'
+    else:
+        text = "Хорошо, отменил отправку."
+        end_session = 'true'
+
 def handler(event, context):
     intents = event.get('request', {}).get('nlu', {}).get('intents', {})
     command = event.get('request', {}).get('command')
     chto = event.get('request', {}).get('nlu', {}).get('intents', {}).get('vkmessage', {}).get('slots', {}).get('Chto', {}).get('value')
     chtostatus = event.get('request', {}).get('nlu', {}).get('intents', {}).get('statusset', {}).get('slots', {}).get('Chto', {}).get('value')
     komu = event.get('request', {}).get('nlu', {}).get('intents', {}).get('vkmessage', {}).get('slots', {}).get('Komu', {}).get('value')
+    ev = event
+    cont = context
+
 
     text = config.INTRO_TEXT
     end_session = 'false'
@@ -132,10 +151,10 @@ def handler(event, context):
             text = "Вы не сказали что отправить..."
             end_session = 'true'
         else:
-            text = str(config.MESS_TEXT1) + str(chto) + str(config.MESS_TEXT2) + str(komu)
-            komu_id = name_to_id(komu)
-            api.messages.send(user_id = komu_id, message = chto)
-            end_session = 'true'
+            text = "Вы подтверждаете отправку? Скажите 'Да' или 'Нет'."
+            end_session = 'false'
+            message_send(ev, cont)
+
     elif intents.get('statusset'):
         api.status.set(text = chtostatus)
         text = str(config.STAT_TEXT1) + str(chtostatus) + str(config.STAT_TEXT2)
